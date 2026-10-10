@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test("starts a practice session on a narrow phone", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText(/Περιεχόμενο επίδειξης/)).toBeVisible();
+  await expect(page.getByText(/Περιεχόμενο επίδειξης/)).toHaveCount(0);
   await page.getByLabel("Κατηγορία").selectOption({ index: 1 });
   await page.getByRole("button", { name: /^Εξάσκηση/ }).click();
   await expect(page.getByText("Ερώτηση", { exact: true })).toBeVisible();
@@ -19,10 +19,10 @@ test("home screen has no automatically detectable accessibility violations", asy
 
 test("enlarges and dismisses a question image", async ({ page }) => {
   await page.addInitScript(() => {
-    Math.random = () => 0.99;
+    Math.random = () => 0.25;
   });
   await page.goto("/");
-  await page.getByLabel("Κατηγορία").selectOption({ label: "Δείγμα — Βασικές Αρχές Προπόνησης" });
+  await page.getByLabel("Κατηγορία").selectOption({ label: "Βιομηχανική" });
   await page.getByRole("button", { name: /^Εξάσκηση/ }).click();
   await page.getByRole("button", { name: "Μεγέθυνση εικόνας" }).click();
   await expect(page.getByRole("dialog", { name: "Μεγεθυμένη εικόνα" })).toBeVisible();
@@ -33,12 +33,12 @@ test("enlarges and dismisses a question image", async ({ page }) => {
 
 test("completes an exam and shows a full review", async ({ page }) => {
   await page.goto("/");
-  await page.getByLabel("Κατηγορία").selectOption({ label: "Δείγμα — Ασφάλεια" });
+  await page.getByLabel("Κατηγορία").selectOption({ label: "Αντιντόπινγκ" });
   await page.getByRole("button", { name: /^Εξέταση/ }).click();
-  for (let index = 0; index < 4; index += 1) {
+  for (let index = 0; index < 10; index += 1) {
     await page.locator(".choices button").first().click();
-    await page.getByRole("button", { name: index === 3 ? "Ολοκλήρωση" : "Επόμενη" }).click();
+    await page.getByRole("button", { name: index === 9 ? "Ολοκλήρωση" : "Επόμενη" }).click();
   }
   await expect(page.getByText("Αποτέλεσμα εξέτασης")).toBeVisible();
-  await expect(page.locator(".review-card")).toHaveCount(4);
+  await expect(page.locator(".review-card")).toHaveCount(10);
 });

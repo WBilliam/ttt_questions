@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "content:sample": "tsx scripts/create-sample-content.ts",
+    "content:extract": "python scripts/extract_question_docs.py && tsx scripts/build-production-workbook.ts",
+    "content:test-extractor": "python -m unittest scripts/extract_question_docs_test.py",
     "content:import": "tsx scripts/import-questions.ts",
     "content:guard-deploy": "tsx scripts/guard-demo-deploy.ts",
     "build": "npm run content:import && tsc -b && vite build",
@@ -22,6 +24,7 @@
   },
   "dependencies": {
     "exceljs": "^4.4.0",
+    "jszip": "3.10.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "sharp": "^0.35.5",

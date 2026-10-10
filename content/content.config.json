@@ -1,5 +1,5 @@
 {
-  "workbook": "content/demo/questions.xlsx",
-  "imagesDir": "content/demo/images",
-  "contentMode": "demo"
+  "workbook": "content/production/questions.xlsx",
+  "imagesDir": "content/production/images",
+  "contentMode": "production"
 }

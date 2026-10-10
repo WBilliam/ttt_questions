@@ -42,6 +42,12 @@ describe("student application", () => {
     expect(screen.getByRole("button", { name: /^Εξάσκηση/ })).toBeEnabled();
   });
 
+  it("hides the demo notice for production content", async () => {
+    render(<App loadBank={async () => ({ ...bank, contentMode: "production" })} />);
+    await screen.findByLabelText("Κατηγορία");
+    expect(screen.queryByText(/Περιεχόμενο επίδειξης/)).not.toBeInTheDocument();
+  });
+
   it("locks a practice answer and shows feedback", async () => {
     render(<App loadBank={async () => bank} random={() => 0} />);
     await userEvent.selectOptions(await screen.findByLabelText("Κατηγορία"), "Δείγμα");

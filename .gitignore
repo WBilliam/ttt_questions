@@ -8,3 +8,9 @@ public/generated/
 *.tsbuildinfo
 .env*
 !.env.example
+question docs/
+.artifact_runtime/
+.tmp_pdf/
+content/production/*.inspect.ndjson
+__pycache__/
+*.pyc

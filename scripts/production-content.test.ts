@@ -25,7 +25,7 @@ const expectedCounts: Record<string, number> = {
   "Παραβίαση Δικαιωμάτων Παιδιού": 15,
   Φυσικοθεραπεία: 53,
   Φυσιολογία: 38,
-  "Τεχνική Ανάλυση": 22
+  "Τεχνική Ανάλυση": 23
 };
 
 describe("production question workbook", () => {
@@ -42,15 +42,31 @@ describe("production question workbook", () => {
     const imageChoices: Record<string, string[]> = {};
     const visibleText: string[] = [];
     const imagePrompts: string[] = [];
+    let poomsaeQuestion: { choices: string[]; correctOption: string } | undefined;
     for (let rowNumber = 2; rowNumber <= sheet.rowCount; rowNumber += 1) {
       const row = sheet.getRow(rowNumber);
       const category = row.getCell(column("category")).text;
       counts[category] = (counts[category] ?? 0) + 1;
       const prompt = row.getCell(column("question")).text;
       visibleText.push(prompt);
-      for (const choice of ["option_a", "option_b", "option_c", "option_d", "option_e", "option_f"]) {
+      for (const choice of [
+        "option_a",
+        "option_b",
+        "option_c",
+        "option_d",
+        "option_e",
+        "option_f"
+      ]) {
         const text = row.getCell(column(choice)).text;
         if (text) visibleText.push(text);
+      }
+      if (prompt === "Η αγωνιστική περιοχή στο Poomsae είναι:") {
+        poomsaeQuestion = {
+          choices: ["option_a", "option_b", "option_c", "option_d"].map(
+            (choice) => row.getCell(column(choice)).text
+          ),
+          correctOption: row.getCell(column("correct_option")).text
+        };
       }
       const image = row.getCell(column("image")).text;
       if (image) {
@@ -69,7 +85,11 @@ describe("production question workbook", () => {
       }
     }
     expect(counts).toEqual(expectedCounts);
-    expect(Object.values(counts).reduce((sum, count) => sum + count, 0)).toBe(666);
+    expect(Object.values(counts).reduce((sum, count) => sum + count, 0)).toBe(667);
+    expect(poomsaeQuestion).toEqual({
+      choices: ["12x12", "10x10", "8x8", "Δεν υπάρχει οριοθέτηση"],
+      correctOption: "B"
+    });
     expect(images).toHaveLength(6);
     expect(imageChoices["visual-4ed28ea39938186a2e31.png"]).toHaveLength(5);
     expect(imageChoices["visual-9f39f53b8e9c9bbec282.png"]?.[3]).toMatch(/τρεις περιπτώσεις/);
@@ -95,7 +115,7 @@ describe("production question workbook", () => {
       samePromptVariantAdditionalQuestions: number;
       issues: Array<{ reason: string }>;
     };
-    expect(report.excludedQuestions).toBe(6);
+    expect(report.excludedQuestions).toBe(5);
     expect(report.samePromptVariantGroups).toHaveLength(17);
     expect(report.samePromptVariantAdditionalQuestions).toBe(22);
     expect(report.issues.filter((issue) => issue.reason.includes("διπλότυπο"))).toHaveLength(4);

@@ -1,6 +1,6 @@
 {
-  "includedQuestions": 666,
-  "excludedQuestions": 6,
+  "includedQuestions": 667,
+  "excludedQuestions": 5,
   "samePromptVariantGroups": [
     {
       "category": "Μεθοδολογία Έρευνας",
@@ -297,7 +297,7 @@
     "Μεθοδολογία Διδασκαλίας": 20,
     "Οργάνωση και Διοίκηση Αθλητισμού": 65,
     "Παραβίαση Δικαιωμάτων Παιδιού": 15,
-    "Τεχνική Ανάλυση": 22,
+    "Τεχνική Ανάλυση": 23,
     "Φυσικοθεραπεία": 53,
     "Φυσιολογία": 38
   },
@@ -332,16 +332,9 @@
     "question docs/ΚΑΝΟΝΙΣΜΟΙ ΑΓΩΝΩΝ.docx": 24,
     "question docs/ΜΕΘΟΔΟΛΟΓΙΑ ΔΙΔΑΣΚΑΛΙΑΣ.docx": 20,
     "question docs/ΠΑΡΑΒΙΑΣΗ ΔΙΚΑΙΩΜΑΤΩΝ ΠΑΙΔΙΟΥ.docx": 15,
-    "question docs/ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx": 22
+    "question docs/ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx": 23
   },
   "issues": [
-    {
-      "source": "question docs/ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx",
-      "category": "Τεχνική Ανάλυση",
-      "location": "παράγραφος/γραμμή 32",
-      "reason": "η ίδια γραμμή περιέχει περισσότερες από μία αριθμημένες επιλογές",
-      "excerpt": "1. 12x12 2. 2. 10x10 ✓"
-    },
     {
       "source": "question docs/ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx",
       "category": "Τεχνική Ανάλυση",

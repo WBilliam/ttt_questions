@@ -10369,6 +10369,22 @@
   },
   {
     "category": "Τεχνική Ανάλυση",
+    "question": "Η αγωνιστική περιοχή στο Poomsae είναι:",
+    "option_a": "12x12",
+    "option_b": "10x10",
+    "option_c": "8x8",
+    "option_d": "Δεν υπάρχει οριοθέτηση",
+    "option_e": "",
+    "option_f": "",
+    "correct_option": "B",
+    "explanation": "",
+    "image": "",
+    "image_alt": "",
+    "source": "question docs/ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx",
+    "source_index": 31
+  },
+  {
+    "category": "Τεχνική Ανάλυση",
     "question": "Στον έλεγχο των αθλητών ο διαιτητής ελέγχει αν:",
     "option_a": "Έχουν κομμένα ή βαμμένα νύχια",
     "option_b": "Οι φόρμες των διαγωνιζόμενων είναι εγκεκριμένες από WT",

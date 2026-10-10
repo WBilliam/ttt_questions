@@ -291,6 +291,28 @@ class ExtractQuestionDocsTest(unittest.TestCase):
         self.assertIn("ambiguous.docx", issues[0].source)
         self.assertIn("δύο", issues[0].reason)
 
+    def test_confirmed_poomsae_inline_numeric_choices_are_normalized(self):
+        questions, issues = parse_styled_questions(
+            [
+                StyledLine("5η. Η αγωνιστική περιοχή στο Poomsae είναι:"),
+                StyledLine("1. 12x12 2. 2. 10x10 ✓", bold=True),
+                StyledLine("3. 8x8"),
+                StyledLine("4. Δεν υπάρχει οριοθέτηση"),
+            ],
+            category="Τεχνική Ανάλυση",
+            source="ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx",
+            correct_style="check",
+            numeric_choices=True,
+        )
+
+        self.assertEqual([], issues)
+        self.assertEqual(1, len(questions))
+        self.assertEqual(
+            ["12x12", "10x10", "8x8", "Δεν υπάρχει οριοθέτηση"],
+            questions[0].choices,
+        )
+        self.assertEqual("B", questions[0].correct_option)
+
     def test_duplicates_are_removed_only_within_same_category(self):
         first, _ = parse_explicit_questions(
             [

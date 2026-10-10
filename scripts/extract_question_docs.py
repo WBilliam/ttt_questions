@@ -6,7 +6,7 @@ import json
 import re
 import sys
 import unicodedata
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Iterable, Literal, Sequence
 
@@ -50,6 +50,12 @@ TRAILING_ANSWER_METADATA_RE = re.compile(
     r"\.?\s*(?:ANSWER|ΣΩΣΤ[ΗΉ]\s+ΑΠ[ΑΆ]ΝΤΗΣΗ)\s*:?\s*$", re.IGNORECASE
 )
 GENERATED_IMAGE_RE = re.compile(r"^visual-[0-9a-f]{20}\.png$")
+CONFIRMED_SOURCE_LINE_SPLITS = {
+    (
+        "ΤΕΧΝΙΚΗ ΑΝΑΛΥΣΗ.docx",
+        "1. 12x12 2. 2. 10x10 ✓",
+    ): ("1. 12x12", "2. 10x10 ✓"),
+}
 
 
 @dataclass(frozen=True)
@@ -124,6 +130,22 @@ def _choice_parts(value: str, allow_numeric: bool = False) -> tuple[str, str] | 
     key = normalize_label(match.group(1)) or (match.group(1) if allow_numeric else None)
     text = strip_trailing_answer_metadata(match.group(2))
     return (key, text) if key and text else None
+
+
+def _apply_confirmed_source_line_splits(
+    lines: Sequence[StyledLine], source: str
+) -> list[StyledLine]:
+    source_name = Path(source).name
+    corrected: list[StyledLine] = []
+    for line in lines:
+        replacements = CONFIRMED_SOURCE_LINE_SPLITS.get(
+            (source_name, normalize_text(line.text))
+        )
+        if replacements:
+            corrected.extend(replace(line, text=text) for text in replacements)
+        else:
+            corrected.append(line)
+    return corrected
 
 
 def _choice_label_only(value: str) -> str | None:
@@ -381,6 +403,9 @@ def parse_styled_questions(
     unlabelled_choices: bool = False,
     numeric_choices: bool = False,
 ) -> tuple[list[ExtractedQuestion], list[ExtractionIssue]]:
+    if numeric_choices:
+        lines = _apply_confirmed_source_line_splits(lines, source)
+
     groups: list[list[StyledLine]] = []
     current: list[StyledLine] = []
     for line in lines:

@@ -337,10 +337,22 @@ export function App({ loadBank = loadQuestionBank, random = Math.random }: AppPr
               {index + 1}. {entry.question.prompt}
             </h3>
             <p>
-              Η απάντησή σου: <strong>{entry.selectedChoice}</strong>
+              Η απάντησή σου:{" "}
+              <strong>
+                {entry.selectedChoice}.{" "}
+                {entry.question.choices.find((choice) => choice.key === entry.selectedChoice)?.text}
+              </strong>
             </p>
             <p>
-              Σωστή απάντηση: <strong>{entry.question.correctChoice}</strong>
+              Σωστή απάντηση:{" "}
+              <strong>
+                {entry.question.correctChoice}.{" "}
+                {
+                  entry.question.choices.find(
+                    (choice) => choice.key === entry.question.correctChoice
+                  )?.text
+                }
+              </strong>
             </p>
             {entry.question.explanation && <p>{entry.question.explanation}</p>}
             <span className={entry.isCorrect ? "tag-correct" : "tag-incorrect"}>

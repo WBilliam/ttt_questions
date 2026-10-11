@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
@@ -67,6 +67,24 @@ describe("student application", () => {
     expect(screen.getByText("1 / 2")).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Επόμενη" }));
     expect(screen.getByText("2 / 2")).toBeInTheDocument();
+  });
+
+  it("shows choice letters and full text in the completed exam review", async () => {
+    render(<App loadBank={async () => bank} random={() => 0.99} />);
+    await userEvent.selectOptions(await screen.findByLabelText("Κατηγορία"), "Δείγμα");
+    await userEvent.click(screen.getByRole("button", { name: /^Εξέταση/ }));
+    await userEvent.click(screen.getByRole("button", { name: /B\. Λάθος/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Επόμενη" }));
+    await userEvent.click(screen.getByRole("button", { name: /A\. Α/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Ολοκλήρωση" }));
+
+    const firstReviewCard = screen.getAllByRole("article")[0];
+    expect(within(firstReviewCard).getByText("Η απάντησή σου:")).toHaveTextContent(
+      "Η απάντησή σου: B. Λάθος"
+    );
+    expect(within(firstReviewCard).getByText("Σωστή απάντηση:")).toHaveTextContent(
+      "Σωστή απάντηση: A. Σωστή"
+    );
   });
 
   it("shows a recovery action when loading fails", async () => {
